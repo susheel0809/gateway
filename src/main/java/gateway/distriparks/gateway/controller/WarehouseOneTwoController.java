@@ -6,12 +6,14 @@ import gateway.distriparks.gateway.constants.EnumFields;
 import gateway.distriparks.gateway.model.WarehouseOneTwo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
 @RestController
+@CrossOrigin("*")
 public class WarehouseOneTwoController {
 
     @Autowired
@@ -72,5 +74,70 @@ public class WarehouseOneTwoController {
         return objects;
     }
 
+    @GetMapping("/consolidator")
+    private List<Map<Object, Object>> getConsolidatorStatus() {
+
+        List<WarehouseOneTwo> all = warehouseOneTwoRepository.findAll();
+
+        LinkedHashMap<Object, Object> stringObjectHashMap;
+        List<Map<Object, Object>> objects = new ArrayList<>();
+        Map<Object, List<Map<Object, Object>>> finalObject = new LinkedHashMap<>();
+
+        List<Map<Object, Object>> columnForRows = new ArrayList<>();
+        Map<Object, Object> forColumn = new LinkedHashMap<>();
+        forColumn.put("label", "Consolidator");
+        forColumn.put("field", "consolidator");
+        forColumn.put("sort", "asc");
+        forColumn.put("width", 150);
+        columnForRows.add(forColumn);
+
+        forColumn = new LinkedHashMap<>();
+        forColumn.put("label", "Plan Received");
+        forColumn.put("field", "plan_received_time");
+        forColumn.put("sort", "asc");
+        forColumn.put("width", 150);
+        columnForRows.add(forColumn);
+
+        forColumn = new LinkedHashMap<>();
+        forColumn.put("label", "Status");
+        forColumn.put("field", "Status");
+        forColumn.put("sort", "asc");
+        forColumn.put("width", 150);
+        columnForRows.add(forColumn);
+
+        forColumn = new LinkedHashMap<>();
+        forColumn.put("label", "CBM");
+        forColumn.put("field", "cbm");
+        forColumn.put("sort", "asc");
+        forColumn.put("width", 150);
+        columnForRows.add(forColumn);
+
+
+        forColumn = new LinkedHashMap<>();
+        forColumn.put("label", "Tue's");
+        forColumn.put("field", "tues");
+        forColumn.put("sort", "asc");
+        forColumn.put("width", 150);
+        columnForRows.add(forColumn);
+
+        finalObject.put("columns",columnForRows);
+
+
+        for (WarehouseOneTwo warehouseOneTwo : all) {
+            if (!warehouseOneTwo.getConsolidator().equals("")) {
+                stringObjectHashMap = new LinkedHashMap<>();
+                stringObjectHashMap.put("consolidator", warehouseOneTwo.getConsolidator());
+                stringObjectHashMap.put("plan_received_time", warehouseOneTwo.getPlan_received_time() != null ? warehouseOneTwo.getPlan_received_time() : "");
+                stringObjectHashMap.put("status", warehouseOneTwo.getStatus());
+                stringObjectHashMap.put("cbm", warehouseOneTwo.getCbm());
+                stringObjectHashMap.put("tues", warehouseOneTwo.getTues());
+                objects.add(stringObjectHashMap);
+            }
+        }
+
+        finalObject.put("rows",objects);
+
+        return objects;
+    }
 
 }
