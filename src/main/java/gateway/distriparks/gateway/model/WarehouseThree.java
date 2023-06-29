@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 
 @JsonIgnoreProperties
-public class WarehouseOneTwo {
+public class WarehouseThree {
 
     @Id
     private String id;
@@ -189,5 +189,3 @@ public class WarehouseOneTwo {
         this.remarks = remarks;
     }
 }
-
-
