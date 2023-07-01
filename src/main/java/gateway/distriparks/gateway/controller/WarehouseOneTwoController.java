@@ -177,7 +177,7 @@ public class WarehouseOneTwoController {
 
 
         Set<String> unique_consolidator = new HashSet<>();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         List<WarehouseOneTwo> all = warehouseOneTwoRepository.findAll();
         if (!all.isEmpty())
             for (WarehouseOneTwo warehouseOneTwo : all) {
